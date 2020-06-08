@@ -6,7 +6,7 @@ namespace LuckyTickets
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!\n:D");
+            Console.WriteLine("Hello World!\nMade a change!");
         }
     }
 }
