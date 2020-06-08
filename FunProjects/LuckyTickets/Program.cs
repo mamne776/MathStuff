@@ -21,13 +21,13 @@ namespace LuckyTickets
     2 2   3   4   5   6   7   8   9  10  11
     3 3   4   5   6   7   8   9  10  11  12
     4 4   5   6   7   8   9  10  11  12  13
-    5 5
+    5 5   6   7   8   9   10 11  12  13  14
     6
     7
     8
     9
 
-    A diagonal pattern is emerging. 0 exists on the table only once, 1 twice, 2 3times, 3 4 times etc.
+    A diagonal pattern is emerging. 0 exists on the table only once, 1 twice, 2 3times, 3 4 times etc. I´m starting to smell combinatorics. I´m having flashbacks. Is this how it all ends?
      
     */
     class LuckyTickets
