@@ -31,7 +31,7 @@ namespace LuckyTickets
     What we are interested in is finding how many pairs exist, where a1 + b1 + ... + x1 = a2 + b2 + ... + x2
 
 
-
+    When we know what the sum of the other half is, we can check in how many different ways this sum can be formed with the amount of digits on the other half.
 
 
 
@@ -49,23 +49,60 @@ namespace LuckyTickets
             int luckies = 0;
 
             //the loop keeps going until user wants to stop by entering '0'
-            while (n != 0) {
+            while (n != 0 ) {
 
                 //get the amount of digits
                 n = nGetter();
 
-                //break the number in to two halves
-                //(int num1, int num2) = NumBreaker(n);
+                //form all the possible right sides, as integers
+                int[] rightSides = RightSideFormer(n);
 
-                //form all the possible right sides
-                int[] rightSide = RightSideFormer(n);
+                //Make an array of the right sides(as arrays)
 
-                //go through all the sums formed by the rightside, and 
+                //go through the numbers on the rightsides array and form their sums. Then check how many different combinations form this sum. 
+                //Add the amount of these combinations to the lucky tickets amount.
+                
+                for (int i = 0; i < rightSides.Length; i++) {
+                    //first, the sums:
+                    int sum = 0;
+                    for (int j = 0; j < ArrayFormer(rightSides[i]).Length; j++) {                        
+                        Console.Write(ArrayFormer(rightSides[i])[j]);
+                        sum += ArrayFormer(rightSides[i])[j];                       
+                    }
+                    Console.WriteLine(" Sum: " + sum);
 
 
-                Console.WriteLine();
 
+                }
             }
+        }
+
+        static int FormSums() {
+            
+            
+            return 0;
+        }
+
+
+        //makes an array out of an integer. Index 0 has the most significant number etc.
+        static int[] ArrayFormer(int givenInteger) {
+            int arraySize = givenInteger.ToString().Length;
+            int[] returnArray = new int[arraySize];
+            for (int i = 0; i < arraySize; i++) {
+                returnArray[arraySize - 1 - i] = givenInteger % 10;
+                givenInteger /= 10;
+            }
+            return returnArray;
+        }
+        
+        //takes an array of integers(represesting the n-digit number we are looking at) and sums the digits
+        static int SumOfDigits(int[] number) {
+            int sum = 0;
+            for (int i = 0; i < number.Length; i++) {
+                sum += number[i];
+            }
+            //Console.WriteLine(sum);
+            return sum;
         }
 
         static int[] RightSideFormer(int n) {
@@ -80,19 +117,12 @@ namespace LuckyTickets
 
         static (int num1, int num2) NumBreaker(int n) {
             //Array formed from the number. It is known that the n is even.
-            //Array needs to fit all the numbers a for which 0 =< a < 10**(n/2)
-           
+            //Array needs to fit all the numbers a for which 0 =< a < 10**(n/2)           
 
-
-
-
-                int num1 = 7;
+            int num1 = 7;
             int num2 = 4;
-            return (num1, num2);
-
-            
-           
-            
+            return (num1, num2);        
+                       
         }
 
         static int nGetter()
