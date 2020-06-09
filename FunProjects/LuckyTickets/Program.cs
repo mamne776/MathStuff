@@ -22,8 +22,7 @@ namespace LuckyTickets
         static void Main(string[] args)
         {
             //digits in numbers
-            int n = 1;
-            
+            int n = 1;            
 
             //the loop keeps going until user wants to stop by entering '0'
             while (n != 0 ) {
