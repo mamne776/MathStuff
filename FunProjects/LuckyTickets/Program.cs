@@ -30,10 +30,10 @@ namespace LuckyTickets
                 int luckies = 0;
 
                 //get the amount of digits
-                n = nGetter();
+                n = NGetter();
 
                 //form all the possible right sides, as integers
-                int[] rightSides = RightSideFormer(n);
+                int[] rightSides = IntToArray(n);
 
                 //go through the numbers on the rightsides array and form their sums.
                 //Then check how many different combinations form this sum. 
@@ -45,23 +45,24 @@ namespace LuckyTickets
                     for (int j = 0; j < ArrayFormer(rightSides[i]).Length; j++) {
                         sum += ArrayFormer(rightSides[i])[j];                       
                     }
-
-                    //Now, how many ways are there to form this sum from n/2 digits?
-                    //luckies += CheckAmountOfCombinations(sum, n/2);
-                    luckies += finalCount(n / 2, sum);
+                    //check how many different ways there are to form this sum, with n/2 integers
+                    luckies += SumCount(n / 2, sum);
                 }
+
+                //But in fact: The sums on the left side can be formed on the right side m times, and also exists on the left side m times,
+                //since the groups containing the sides are identical!
+                // 
+                //Therefore, if we just know which sums can be formed by n/2 digits, then check how many different ways there are to form
+                //these sums, and square them, then sum the squares, we get our wanted amount of Lucky Tickets.
+
+
                 Console.WriteLine(luckies);
             }            
         }
 
-        //How many ways are there to form this sum from m digits
-        static int CheckAmountOfCombinations(int sum, int m) {
 
-            return 0;
-        }
-
-        //try this:
-        static int countRec(int n, int sum)
+        //how many ways to form a sum with n digits
+        static int SumCount(int n, int sum)
         {
             // Base case 
             if (n == 0)
@@ -72,26 +73,12 @@ namespace LuckyTickets
 
             // Initialize answer 
             int ans = 0;
-            // Traverse through every digit and count numbers beginning with it using recursion 
+            // Go through every digit and count numbers beginning with it using recursion 
             for (int i = 0; i <= 9; i++)
                 if (sum - i >= 0)
-                    ans += countRec(n - 1, sum - i);
+                    ans += SumCount(n - 1, sum - i);
             return ans;
-        }
-
-        // This is mainly a wrapper over countRec. It explicitly handles leading digit and calls countRec() for remaining digits. 
-        static int finalCount(int n, int sum)
-        {
-
-            // Initialize final answer 
-            int ans = 0;
-
-            // Traverse through every digit from 0 to 9 and count numbers beginning with it 
-            for (int i = 0; i <= 9; i++)
-                if (sum - i >= 0)
-                    ans += countRec(n - 1, sum - i);
-            return ans;
-        }
+        }       
 
         //makes an array out of an integer. Index 0 has the most significant number etc.
         static int[] ArrayFormer(int givenInteger) {
@@ -104,17 +91,23 @@ namespace LuckyTickets
             return returnArray;
         }        
 
-        static int[] RightSideFormer(int n) {
-            int[] rightSide = new int[(int)Math.Pow(10.0, (double)(n / 2))];
+        //turns an integer n into an array of integers. 0 as leftmost digit is included
+        //index 0 has the least significant number
+        static int[] IntToArray(int n) {
+            
+            int[] nAsArray = new int[(int)Math.Pow(10.0, (double)(n / 2))];
+
             //form the first halves of the numbers.
             for (int i = 0; i < (int)Math.Pow(10.0, (double)(n / 2)); i++)
             {
-                rightSide[i] = i;
+                nAsArray[i] = i;
             }
-            return rightSide;
+
+            return nAsArray;
         }        
 
-        static int nGetter()
+        //get the length of the numbers we are interested in
+        static int NGetter()
         {
             Console.WriteLine("How many digits do you want your lucky numbers to have? ");
             int n = Convert.ToInt32(Console.ReadLine());
