@@ -82,9 +82,9 @@ namespace LabyrinthGenerator
             int b = rand1.Next(y);
 
             //pick a cell, mark it as part of the maze
-            //if you change these values, remember to change the neighbours too!
             Cell cell = new Cell(a, b);
             startMaze[a, b] = cell;
+            //cell.visited = true;
 
             //get the neighbours
             startMaze[a, b].neighbours = GetNeighbours(startMaze, startMaze[a, b], x, y);
@@ -95,32 +95,51 @@ namespace LabyrinthGenerator
             //top row doesnt have neighbours on top            
             if (b < y - 1)
             {
-                startMaze[a, b].neighbours.Add(startMaze[a, b + 1]);
+                if (!startMaze[a, b + 1].visited)
+                {
+                    startMaze[a, b].neighbours.Add(startMaze[a, b + 1]);
+                }
             }
             //bottom row has no neighbours under
             if (b > 0)
             {
-                startMaze[a, b].neighbours.Add(startMaze[a, b - 1]);
+                //add to neighbours if hasn't already been visited
+                if (!startMaze[a, b - 1].visited)
+                {
+                    startMaze[a, b].neighbours.Add(startMaze[a, b - 1]);
+                }
             }
             //left column has no neighbours on the left
             if (a > 0)
             {
-                startMaze[a, b].neighbours.Add(startMaze[a - 1, b]);
+                if (!startMaze[a - 1, b].visited)
+                {
+                    startMaze[a, b].neighbours.Add(startMaze[a - 1, b]);
+                }
             }
             //right column ha no neighbours to the right
             if (a < x - 1)
             {
-                startMaze[a, b].neighbours.Add(startMaze[a + 1, b]);
+                if (!startMaze[a + 1, b].visited)
+                {
+                    startMaze[a, b].neighbours.Add(startMaze[a + 1, b]);
+                }
             }
+<<<<<<< Updated upstream
             
+=======
+>>>>>>> Stashed changes
             for (int i = 0; i < startMaze[a, b].neighbours.Count(); i++)
             {
                 wallList.Add(startMaze[a, b].neighbours[i]);
-
             }
+<<<<<<< Updated upstream
             */
 
 
+=======
+            //int count = startMaze[a, b].neighbours.Count();
+>>>>>>> Stashed changes
 
 
             //while there are walls on the list
@@ -134,9 +153,12 @@ namespace LabyrinthGenerator
                 int rwx = randWall.x;
                 int rwy = randWall.y;
 
+                randWall.visited = true;
+
                 //for highlighting
                 randWall.isHighLighted = true;
 
+<<<<<<< Updated upstream
                 //get the neighbours
                 randWall.neighbours.AddRange(GetNeighbours(startMaze, startMaze[rwx, rwy], x, y));
                 //add the walls that are neighbours to the list
@@ -150,25 +172,40 @@ namespace LabyrinthGenerator
 
                 /*
                 //get the neighbours
+=======
+                //get the neighbouring walls
+>>>>>>> Stashed changes
                 //top row doesnt have neighbours on top
                 if (rwy < y - 1)
                 {
-                    randWall.neighbours.Add(startMaze[rwx, rwy + 1]);
+                    if (!startMaze[rwx, rwy + 1].visited)
+                    {
+                        randWall.neighbours.Add(startMaze[rwx, rwy + 1]);
+                    }
                 }
                 //bottom row has no neighbours under
                 if (rwy > 0)
                 {
-                    randWall.neighbours.Add(startMaze[rwx, rwy - 1]);
+                    if (!startMaze[rwx, rwy - 1].visited)
+                    {
+                        randWall.neighbours.Add(startMaze[rwx, rwy - 1]);
+                    }
                 }
                 //left column has no neighbours on the left
                 if (rwx > 0)
                 {
-                    randWall.neighbours.Add(startMaze[rwx - 1, rwy]);
+                    if (!startMaze[rwx - 1, rwy].visited)
+                    {
+                        randWall.neighbours.Add(startMaze[rwx - 1, rwy]);
+                    }
                 }
                 //right column ha no neighbours to the right
                 if (rwx < x - 1)
                 {
-                    randWall.neighbours.Add(startMaze[rwx + 1, rwy]);
+                    if (!startMaze[rwx + 1, rwy].visited)
+                    {
+                        randWall.neighbours.Add(startMaze[rwx + 1, rwy]);
+                    }
                 }
                 */
 
@@ -189,26 +226,34 @@ namespace LabyrinthGenerator
                 {
                     //too many labyrinth cells, remove the wall from the list
                     wallList.RemoveAt(index);
+                    //mark as visited
+                    //randWall.visited = true;
                 }
 
                 //Make the wall a passage and mark the unvisited cell as part of the maze.
                 if (lbn == 1)
                 {
                     //Add the neighboring walls of the cell to the wall list
-                    int nC = startMaze[rwx, rwy].neighbours.Count();
+                    int nC = randWall.neighbours.Count();
                     for (int i = 0; i < nC; i++)
                     {
                         //if not part of the labyrinth
-                        if (!startMaze[rwx, rwy].neighbours[i].isLabyrinth)
+                        if (!randWall.neighbours[i].isLabyrinth && !randWall.visited)
                         {
                             //add to the list of walls
+<<<<<<< Updated upstream
                             wallList.Add(startMaze[rwx, rwy].neighbours[i]);
                             //Replace the Wall with a Cell 
                             startMaze[rwx, rwy] = new Cell(rwx, rwy);                           
+=======
+                            wallList.Add(randWall.neighbours[i]);
+>>>>>>> Stashed changes
                         }
                     }
                     //remove the wall from the wall list 
                     wallList.RemoveAt(index);
+                    //mark as visited
+                    //startMaze[rwx, rwy].visited = true;
                     //highlighting
                     startMaze[rwx, rwy].isHighLighted = true;
 
@@ -283,6 +328,7 @@ namespace LabyrinthGenerator
                 }
                 sb.AppendLine();
             }
+            Console.CursorVisible = false;
             Console.SetCursorPosition(0, 0);
             if (isDemoing)
             {
@@ -301,6 +347,8 @@ namespace LabyrinthGenerator
         public bool isLabyrinth;
         //List of the cells neighbours
         public List<Cell> neighbours;
+        //has the cell already been visited (checked by the algorithm)
+        public bool visited;
         //for highlighting
         public bool isHighLighted;
 
@@ -311,6 +359,7 @@ namespace LabyrinthGenerator
             typeNro = 0;
             isLabyrinth = true;
             neighbours = new List<Cell>();
+            visited = true;
             isHighLighted = false;
         }
     }
@@ -320,6 +369,7 @@ namespace LabyrinthGenerator
         {
             typeNro = 1;
             isLabyrinth = false;
+            visited = false;
         }
     }
 }
