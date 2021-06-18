@@ -16,8 +16,8 @@ namespace LabyrinthGenerator
     {
         static void Main(string[] args)
         {
-            bool demoing = !true;
-            int demoDelay = 10;
+            bool demoing = true;
+            int demoDelay = 0;
 
             //size of the grid
             int width = 120;
@@ -99,7 +99,7 @@ namespace LabyrinthGenerator
             {
                 cell.neighbours.Add(startMaze[a - 1, b]);
             }
-            //right column ha no neighbours to the right
+            //right column has no neighbours to the right
             if (a < x - 1)
             {
                 cell.neighbours.Add(startMaze[a + 1, b]);
@@ -112,10 +112,6 @@ namespace LabyrinthGenerator
                 }
             }
             cell.visited = true;
-            cell.touched++;
-            //add the walls of the cell to the wall list
-            //wallList.Add((WallCell)startMaze[0, 1]);
-            //wallList.Add((WallCell)startMaze[1, 0]);
 
             //while there are walls on the list
             while (wallList.Count > 0)
@@ -155,6 +151,7 @@ namespace LabyrinthGenerator
 
                 //If only one of the two cells that the wall divides is visited, then:
                 //Make the wall a passage and mark the unvisited cell as part of the maze.
+
                 //labyrinth neighbours:
                 int lbn = 0;
                 for (int i = 0; i < randWall.neighbours.Count(); i++)
@@ -167,11 +164,11 @@ namespace LabyrinthGenerator
 
                 if (lbn > 1)
                 {
-                    //too many labyrinth cells, remove the wall from the list                    
+                    //too many neighbouring labyrinth cells, remove the wall from the list                    
                     //wallList[index].visited = true;
                     wallList.RemoveAt(index);
+                    //this wallblock has been checked
                     randWall.visited = true;
-                    randWall.touched++;
                 }
 
                 //Make the wall a passage and mark the unvisited cell as part of the maze.
